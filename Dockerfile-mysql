@@ -1,8 +1,8 @@
-FROM mysql
+FROM mysql:5.7
 
 ENV MYSQL_DATABASE crm_digital
 ENV MYSQL_ROOT_PASSWORD root
-ENV MYSQL_USER crm_digital
+ENV MYSQL_USER crm_digital_user
 ENV MYSQL_PASSWORD crmpasswd
 
 COPY mysql.cnf /etc/mysql/conf.d/
