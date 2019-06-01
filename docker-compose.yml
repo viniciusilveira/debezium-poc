@@ -35,3 +35,14 @@ services:
      - CONFIG_STORAGE_TOPIC=my_connect_configs
      - OFFSET_STORAGE_TOPIC=my_connect_offsets
      - STATUS_STORAGE_TOPIC=my_connect_statuses
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile-elixir
+    depends_on:
+      - connect
+      - mysql
+      - zookeeper
+      - kafka
+    links:
+      - connect
