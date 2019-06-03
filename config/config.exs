@@ -31,13 +31,59 @@ use Mix.Config
 
 config :logger, level: :info
 
-config :kaffe,
-  consumer: [
-    endpoints: [kafka: 9092],
-    topics: ["crm_digital.crm_digital.vtiger_products"],
-    consumer_group: "crm-consumer",
-    message_handler: DebeziumConsumer,
-    async_message_ack: true,
-    start_with_earliest_message: true,
-    max_bytes: 500_000
-  ]
+config :kafka_ex,
+  # A list of brokers to connect to. This can be in either of the following formats
+  #
+  #  * [{"HOST", port}...]
+  #  * CSV - `"HOST:PORT,HOST:PORT[,...]"`
+  #  * {mod, fun, args}
+  #  * &arity_zero_fun/0
+  #  * fn -> ... end
+  #
+  # If you receive :leader_not_available
+  # errors when producing messages, it may be necessary to modify "advertised.host.name" in the
+  # server.properties file.
+  # In the case below you would set "advertised.host.name=localhost"
+  brokers: [
+    {"kafka", 9092}
+  ],
+  #
+  # OR:
+  # brokers: "localhost:9092,localhost:9093,localhost:9094"
+  #
+  # It may be useful to configure your brokers at runtime, for example if you use
+  # service discovery instead of storing your broker hostnames in a config file.
+  # To do this, you can use `{mod, fun, args}` or a zero-arity function, and `KafkaEx`
+  # will invoke your callback when fetching the `:brokers` configuration.
+  # Note that when using this approach you must return a list of host/port pairs.
+  #
+  # the default consumer group for worker processes, must be a binary (string)
+  #    NOTE if you are on Kafka < 0.8.2 or if you want to disable the use of
+  #    consumer groups, set this to :no_consumer_group (this is the
+  #    only exception to the requirement that this value be a binary)
+  consumer_group: "crm-consumer",
+  # Set this value to true if you do not want the default
+  # `KafkaEx.Server` worker to start during application start-up -
+  # i.e., if you want to start your own set of named workers
+  disable_default_worker: false,
+  # Timeout value, in msec, for synchronous operations (e.g., network calls).
+  # If this value is greater than GenServer's default timeout of 5000, it will also
+  # be used as the timeout for work dispatched via KafkaEx.Server.call (e.g., KafkaEx.metadata).
+  # In those cases, it should be considered a 'total timeout', encompassing both network calls and
+  # wait time for the genservers.
+  sync_timeout: 5_000,
+  # Supervision max_restarts - the maximum amount of restarts allowed in a time frame
+  max_restarts: 10,
+  # Supervision max_seconds -  the time frame in which :max_restarts applies
+  max_seconds: 60,
+  # Interval in milliseconds that GenConsumer waits to commit offsets.
+  commit_interval: 5_000,
+  # Threshold number of messages consumed for GenConsumer to commit offsets
+  # to the broker.
+  commit_threshold: 100,
+  # This is the flag that enables use of ssl
+  use_ssl: false,
+
+  # set this to the version of the kafka broker that you are using
+  # include only major.minor.patch versions.  must be at least 0.8.0
+  kafka_version: "0.10.1"
