@@ -28,13 +28,16 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env()}.exs"
+
+config :logger, level: :info
+
 config :kaffe,
   consumer: [
     endpoints: [kafka: 9092],
-    topics: ["elastic-search"],
-    consumer_group: "elastic-search-group",
+    topics: ["crm_digital.crm_digital.vtiger_products"],
+    consumer_group: "crm-consumer",
     message_handler: DebeziumConsumer,
-    offset_reset_policy: :reset_to_latest,
-    max_bytes: 500_000,
-    worker_allocation_strategy: :worker_per_topic_partition
+    async_message_ack: true,
+    start_with_earliest_message: true,
+    max_bytes: 500_000
   ]

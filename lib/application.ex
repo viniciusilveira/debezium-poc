@@ -7,12 +7,12 @@ defmodule DebeziumConsumer.Application do
 
     children = [
       # calls to start Kaffe's Consumer module
-      %{
-        id: Kaffe.GroupMemberSupervisor,
-        start: {Kaffe.GroupMemberSupervisor, :start_link, []},
-        type: :supervisor
-      }
-      # worker(Kaffe.Consumer, [])
+      worker(Kaffe.Consumer, [])
+      # %{
+      #   id: Kaffe.GroupMemberSupervisor,
+      #   start: {Kaffe.GroupMemberSupervisor, :start_link, []},
+      #   type: :supervisor
+      # }
     ]
 
     opts = [strategy: :one_for_one, name: DebeziumConsumer.Supervisor]
