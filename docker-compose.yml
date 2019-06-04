@@ -36,11 +36,11 @@ services:
      - OFFSET_STORAGE_TOPIC=my_connect_offsets
      - STATUS_STORAGE_TOPIC=my_connect_statuses
      - SESSION_TIMEOUT_MS=100_000
-  consumer:
-    build:
-      context: .
-      dockerfile: Dockerfile-elixir
-    links:
-      - kafka
-      - zookeeper
-      - connect
+  # consumer:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-elixir
+  #   links:
+  #     - kafka
+  #     - zookeeper
+  #     - connect

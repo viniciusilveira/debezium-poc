@@ -33,7 +33,7 @@ config :logger, level: :info
 
 config :kaffe,
   consumer: [
-    endpoints: [kafka: 9092],
+    endpoints: [localhost: 9092],
     topics: ["crm_digital.crm_digital.vtiger_products"],
     consumer_group: "crm-consumer",
     message_handler: DebeziumConsumer,
