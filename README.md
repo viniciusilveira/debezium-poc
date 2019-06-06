@@ -104,3 +104,4 @@ Após configurar sua conexão inicie a aplicação elixir:
 iex -S mix run
 ```
 
+* Para mais informações sobre `Debezium`, `Kafka` e cia ver [gist](https://gist.github.com/viniciusilveira/927267468e1d9ac1f99f8e6e844b5f88)
